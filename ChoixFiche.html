@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choix de Fiche</title>
+    <style>
+        body { font-family: Arial, sans-serif;}
+        .column { display: inline-block; vertical-align: top; margin: 10px; }
+        .fiche {
+				display:flex;
+				justify-content: space-between;				
+					}
+        h3 { text-align: center; }
+        button { margin: 10px; }
+		.containertot{
+			width : 1200px;
+			margin:auto;
+			margin-top:2%;
+			padding:30px;
+			background-color: pink;
+			border-radius:20px;			
+			}
+		.score {			
+			width:80px;
+			height:35px;
+			background-color:white;
+			border:1px solid black;
+			font-size:12px;}
+		.column {
+            width: 18%;
+            background-color: #D8F3F9;
+            border: 1px solid #ccc;
+            padding: 5px;
+            box-sizing: border-box;
+		.column h3 {
+            text-align: center;
+            background-color: #00AEEF;
+            color: white;
+            padding: 5px;
+            margin: -10px -10px 5px -10px;
+        }
+		@media screen and (orientation:landscape) and (max-width: 2010px){
+		.containertot{width : 900px;padding:0px;margin-top:0px}
+		.score {height:30px;font-size:10px;}
+		.column h3 {margin:0px;}
+        }
+    </style>
+</head>
+<body>
+<div class="containertot">
+    
+        <span id="nomJoueur" style="display:float-left;background-color:white;font: bold 20px arial;border-radius:10px;"></span><span style="margin-left:300px;background-color:white;font: bold 20px arial;border-radius:10px;"> &nbsp;CHOISIS UNE FICHE&nbsp; </span>  
+		<div>&nbsp;</div>
+    
+
+    <div id="fiches"></div>
+
+    <!-- Boutons -->
+    <div>
+        <button onclick="validerFiche()" style="background-color: yellow;font-size:20px;border-radius:10px;">Pointe la fiche choisie puis clique sur le jaune</button>
+        <button style="font-size:20px;border-radius:10px;" onclick="changerJoueur()">Changer de joueur</button>
+        <button style="font-size:20px;border-radius:10px;" onclick="quitterJeu()">Quitter le jeu</button>		
+    </div>
+</div>
+    <script>
+       
+		// Récupérer les données du localStorage
+        const nom = localStorage.getItem("nomJoueur");
+		var messascore=new Array();
+		var messacoul=new Array();
+		const numerofiche=0;		
+		
+		//récupère les scores et dates
+		chargerScoresEtCreerFiches(nom);
+		//rechercherScoresEtDates(nom);		 
+		 //document.getElementById("nomJoueur").innerText = "Joueur : "+nom+" ";            
+         //var attente=setTimeout(creerFiches,400) ;//attente pour que le PHP ait le temps	
+
+		
+      
+        // Fonction pour créer les fiches
+        function creerFiches() {					    	     
+            const niveaux = ['Très Facile', 'Facile', 'Moyen', 'Difficile', 'Très Difficile'];
+            const container = document.getElementById('fiches');
+            container.innerHTML = ""; // Réinitialiser le tableau
+            let numeroFiche = 1;
+			messaScores();	
+				
+
+            niveaux.forEach(niveau => {
+                const colonne = document.createElement('div');
+                colonne.className = 'column';
+                colonne.innerHTML = `<h3 style="background-color: #00AEEF;color: white;">Niveau ${niveau}</h3>`;
+										
+                for (let i = 0; i < 13; i++) { // 13 fiches par niveau
+				    const mscore=messascore[numeroFiche-1];
+					const mcoul=messacoul[numeroFiche-1];
+					let ficheDiv = document.createElement("div");
+					ficheDiv.className = "fiche";
+                    ficheDiv.innerHTML = `
+                        <label style="padding-top:8px;">
+                            <input type="radio" name="fiche" value="${numeroFiche}">
+                            FICHE ${numeroFiche}
+                        </label>						
+                        <div id="score${numeroFiche}" class="score" style="font-size: small;text-align:center;padding-top:2px;background-color:${mcoul}"> ${mscore}</div>`;
+                    colonne.appendChild(ficheDiv);
+                    numeroFiche++;
+                }
+                container.appendChild(colonne);				
+            });	
+				window.scrollTo(0, document.body.scrollHeight);//faire scoller la page vers le bas
+        }
+
+        // Fonction pour valider la fiche choisie
+        function validerFiche() {
+            const ficheChoisie = document.querySelector('input[name="fiche"]:checked');
+            if (ficheChoisie) {
+                const indexFiche = ficheChoisie.value;               
+				var dialog=confirm(" Le joueur est "+nom+"\n Il a choisi la fiche N° "+indexFiche);
+					if (!dialog){exit};
+					
+                // Stocker les données pour la prochaine page				
+                localStorage.setItem("nomJoueur", nom);
+                localStorage.setItem("numeroFiche", indexFiche);
+
+                // Redirection vers la page de jeu
+                window.location.href = "AnimalogV9.html";
+            } else {
+                alert("Veuillez choisir une fiche avant de valider !");
+            }
+        }
+
+        // Fonction pour changer de joueur
+        function changerJoueur() {            
+			window.location.href = "ChoixNom.html"
+        }
+
+        // Fonction pour quitter le jeu
+        function quitterJeu() {	
+		window.location.href = "https://www.google.fr/";
+        }
+		
+		//Fonction pour récupèrer les scores et dates
+		//première partie
+		async function chargerScoresEtCreerFiches(nom) {
+		// Affiche le nom du joueur immédiatement
+		document.getElementById("nomJoueur").innerText = "Joueur : " + nom + " ";
+
+		// Attendre la récupération des scores et dates avant de continuer
+		await rechercherScoresEtDates(nom);
+
+		// Une fois les données récupérées, exécuter creerFiches()
+		creerFiches();
+}
+
+		//deuxième partie fonction elle-même
+		// Fonction pour récupérer les scores et dates
+		async function rechercherScoresEtDates(nom) {
+		try {
+        let response = await fetch('listescores.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({ nom: nom })
+        });
+
+        if (!response.ok) {
+            throw new Error('Erreur lors de la requête : ' + response.status);
+        }
+
+        let data = await response.json();
+
+        console.log('Scores:', data.scores);
+        console.log('Dates:', data.dates);
+		scores=data.scores;
+		dates=data.dates;
+
+        // Si tu veux utiliser les valeurs en dehors de la fonction
+        //return data;
+
+    } catch (error) {
+        console.error('Erreur lors de la recherche des données :', error);
+    }
+}
+
+	
+
+	//Fonction pour préparer les scores
+	  function messaScores() {
+	  for ( m = 0; m < 65; m++) {
+	  if (scores[m]=="X")
+	  {messascore[m]="";messacoul[m]="white"}
+	  else if (scores[m]==0)
+	  {messascore[m]=scores[m]+" faute le "+dates[m];
+		messacoul[m]="#80FF00"}
+		else {messascore[m]=scores[m]+" fautes le "+dates[m];
+		messacoul[m]="#ffcc00"};
+	  }
+	  }
+
+    </script>
+</body>
+</html>

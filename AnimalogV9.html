@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Déplacement d'éléments</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+			background-color:pink;
+        }
+        #container {
+            position: relative;
+			width: 100vw;
+            height: 100vh;
+            background-color: pink;				
+			align:center;
+			margin:auto;
+        }
+        #fiche {
+            position: absolute;
+            left: 20%;
+            top: 40%;
+            transform: translateY(-40%);
+			width : 450px;
+			height : 330px;
+        }
+        #quadrillage {
+            position: absolute;
+            right: 25%;
+            top: 50%;
+            width: 368px; /* 3 cases de 120px */
+            height: 368px; /* 3 cases de 120px */
+            transform: translateY(-50%);
+            display: grid;
+            grid-template-columns: repeat(3, 120px);
+            grid-template-rows: repeat(3, 120px);
+            border: 3px solid black;
+            box-sizing: border-box;
+        }
+        .case {
+            border: 1px solid black;
+            width: 120px;
+            height: 120px;
+			background-color: white;		
+        }
+        .draggable {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            cursor: grab;
+        }
+        #R1 {right: calc(48%);
+            top: 15%;z-index:5}       
+        #R2 {right: calc(45%);
+            top: 15%;z-index:5}		
+		#R3 {right: calc(42%);
+            top: 15%;z-index:5}        
+        #R4 {right: calc(37%);
+            top: 15%;z-index:5}
+		#R5 {right: calc(34%);
+            top: 15%;z-index:5}
+        #R6 {right: calc(31%);
+            top: 15%;z-index:5}
+		#R7 {right: calc(26%);
+            top: 15%;z-index:5}
+        #R8 {right: calc(23%);
+            top: 15%;z-index:5}
+		#R9 {right: calc(20%);
+            top: 15%;z-index:5}
+				
+        #position {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 18px;
+            color: black;
+        }
+		#positioncase {
+            position: absolute;
+            top: 40px;
+            left: 10px;
+            font-size: 18px;
+            color: black;
+        }
+		#positioncadre {
+            position: absolute;
+            top: 70px;
+            left: 10px;
+            font-size: 18px;
+            color: black;
+        }
+		
+		#nomJoueur {
+			position: absolute;
+			top:15%;
+			left:20%;
+			background-color:white;
+			font: bold 25px arial;}
+			
+		#NoFiche {
+			position: absolute;
+			top:20%;
+			left:20%;
+			background-color:white;
+			font: bold 28px arial;}
+			
+		#positionchoix {
+            position: absolute;
+            bottom: 24%;
+            right: 34.7%;
+			width:180px;
+            font-size: 18px;
+			font-weight:bold;
+           border:2px solid black;
+		   background:white;
+		   display:block;
+        }
+		#positionquit {
+            position: absolute;
+            bottom: 24%;
+            right: 25%;
+			width:180px;
+            font-size: 18px;
+			font-weight:bold;
+           border:2px solid black;
+		   background:white;
+		   display:block;
+        }
+		#positionfin {
+            position: absolute;
+            bottom: 18%;
+            right: 25%;
+			width:360px;
+            font-size: 26px;
+			font-weight:bold;
+           border:2px solid black;
+		   background:white;
+		   display:none;
+        }
+		#positioncorri {
+            position: absolute;
+            bottom: 18%;
+            right: 25%;
+			width:360px;
+            font-size: 26px;
+			font-weight:bold;
+           border:2px solid black;
+		   background:white;
+		   display:none;
+        }
+		#positionconsiresu {
+            position: absolute;
+            top: 25%;
+            right: 25%;
+			width:360px;
+            font-size: 18px;
+			text-align:center;
+			font-weight:bold;
+           border:2px solid black;
+		   background:white;
+		   display:block;
+		   z-index:0;
+        }
+		#verification {
+            position: absolute;
+            bottom: 10%;
+            right: 28%;
+            font-size: 26px;
+           border:2px solid black;
+		   background:white;
+		   display:none;
+        }
+		#aide {
+		 position: absolute;
+		 display:none;
+		 bottom: 15%;
+         left: 20%;}
+			
+		#aidebout{
+			position:absolute;
+			left:27%;
+			bottom :34%;
+			font-size: 18px;
+			text-align:center;
+			font-weight:bold;
+            border:2px solid black;
+			background:#03fd05;
+			}
+	
+	@media screen and (max-width:2010px){
+		#fiche {left: 15%;top:32%}
+		#quadrillage {right: 15%;top:46%}
+        #R1 {right: calc(44%);
+            top: 4%;}       
+        #R2 {right: calc(40%);
+            top: 4%;}		
+		#R3 {right: calc(36%);
+            top: 4%;}        
+        #R4 {right: calc(31%);
+            top: 4%;}
+		#R5 {right: calc(27%);
+            top: 4%;}
+        #R6 {right: calc(23%);
+            top: 4%;}
+		#R7 {right: calc(18%);
+            top: 4%;}
+        #R8 {right: calc(14%);
+            top: 4%;}
+		#R9 {right: calc(10%);
+            top: 4%;}
+		#positionconsiresu {top: 14%;right: 15%;}
+        #positionquit {bottom: 22%;right: 15%;}
+		#positionchoix { bottom: 22%;  right: 29%;}        
+        #nomJoueur {top:3%;left:15%;}
+		#NoFiche {top:8%;left:15%;}	
+		#positioncorri {bottom: 16%;right: 15%;}
+        #verification {bottom: 16%;right: 15%;}   
+		#positionfin {bottom: 16%;right: 15%;}
+		#aidebout {bottom: 36%;left: 24%;}
+		#aide {bottom: 12%;left: 15%;}
+          }          
+                  
+    </style>
+</head>
+<body>
+    <div id="container">
+		<span id="nomJoueur"></span>
+		<span id="NoFiche"></span>
+        <img id="fiche">
+        <div id="quadrillage">
+            <!-- Les cases sont créées ici -->
+            <div class="case"></div>
+            <div class="case"></div>
+            <div class="case"></div>
+            <div class="case"></div>
+            <div class="case"></div>
+            <div class="case"></div>
+            <div class="case"></div>
+            <div class="case"></div>
+            <div class="case"></div>
+        </div>
+        <img id="R1" class="draggable" src="Fiches/chienvert.ICO" alt="Chien">
+        <img id="R2" class="draggable" src="Fiches/oiseauver.ICO" alt="Oiseau">
+		<img id="R3" class="draggable" src="Fiches/chatvert.ICO" alt="Chien">
+        <img id="R4" class="draggable" src="Fiches/chienrou.ICO" alt="Oiseau">
+		<img id="R5" class="draggable" src="Fiches/oiseaurou.ICO" alt="Chien">
+        <img id="R6" class="draggable" src="Fiches/chatrou.ICO" alt="Oiseau">
+		<img id="R7" class="draggable" src="Fiches/chienjau.ICO" alt="Chien">
+        <img id="R8" class="draggable" src="Fiches/oiseaujau.ICO" alt="Oiseau">
+		<img id="R9" class="draggable" src="Fiches/chatjau.ICO" alt="Chien">        
+		<div id="positionconsiresu">Pour jouer, fais glisser les animaux<br>dans les cases ci-dessous </div>
+		<button id="positionchoix" onclick="choixFiche()">&nbsp;Choisir une&nbsp;<br>&nbsp;autre fiche</button>
+		<button id="positionquit" onclick="changJoueur()">&nbsp;Changer&nbsp;<br>&nbsp;&nbsp;de joueur. </button> 
+		<button id="positionfin" onclick="verif()">&nbsp;&nbsp; Vérifier-Corriger &nbsp;&nbsp;</button>
+		<button id="positioncorri" onclick="corrig()">&nbsp; Corriger ce qui est faux.&nbsp;&nbsp;</button>
+		<button id="aidebout" onclick="affAide()">&nbsp; AIDE (exemples).&nbsp;&nbsp;</button>
+		<img id="aide" src="Fiches/AideTot.jpg" />
+	</div>
+	<script type="text/javascript" src="Fiches/solution.js"></script>
+    <script>
+				
+		//Réponses
+		var chrono1=null;
+		var chrono2=null;
+		var Obj=new Array;
+		var erreur=0;		
+		var taberr=[0,0,0,0,0,0,0,0,0];
+		
+		
+		// Récupération du nom et du numéro de la fiche
+		var nom = localStorage.getItem("nomJoueur");
+        var indexFiche = localStorage.getItem("numeroFiche");
+		document.getElementById("nomJoueur").innerText =" Joueur : "+nom+" ";
+		document.getElementById("NoFiche").innerText =" FICHE N° "+indexFiche+" ";
+		nouFiche();		
+				 
+        // Variables pour les éléments
+        const draggables = document.querySelectorAll('.draggable');
+        const quadrillage = document.getElementById('quadrillage');       
+		var Rcase = [[0,0,0],[0,0,0],[0,0,0]];
+			
+        let currentElement = null;
+        let offsetX = 0;
+        let offsetY = 0;
+        let initialPositions = {};
+		let draggingEnabled = true; // Flag pour activer ou désactiver le déplacement
+		let enregEnabled=true; // Flag pour enregistrer uniquement le 1er résultat d'une fiche
+
+        // Stocker les positions initiales
+        draggables.forEach(draggable => {
+            const rect = draggable.getBoundingClientRect();
+			initialPositions[draggable.id] = { left: rect.left, top: rect.top };			
+            draggable.addEventListener('mousedown', startDrag);
+            draggable.addEventListener('touchstart', startDrag);			
+		});			
+ 
+        // Démarrer le drag
+        function startDrag(event) {
+			if (!draggingEnabled) return;
+            event.preventDefault();
+            currentElement = event.target;
+			const rect = currentElement.getBoundingClientRect();
+            offsetX = (event.clientX || event.touches[0].clientX) - rect.left;
+            offsetY = (event.clientY || event.touches[0].clientY) - rect.top;
+		
+		// remettre à zéro la case cliquée qui contient un élément
+			anideN=currentElement.id;
+				NaniN=anideN[1];
+				for (a=0 ; a<3 ; a++)
+				   for (b=0 ; b<3 ; b++)
+			         if (Rcase[a][b]==NaniN){Rcase[a][b]=0};
+			
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('touchmove', drag);
+            document.addEventListener('mouseup', endDrag);
+            document.addEventListener('touchend', endDrag);
+		}
+
+        // Déplacement
+        function drag(event) {
+            if (!currentElement|| !draggingEnabled) return;
+			
+            const x = (event.clientX || event.touches[0].clientX) - offsetX;
+            const y = (event.clientY || event.touches[0].clientY) - offsetY;
+
+            // Empêcher de sortir de la fenêtre
+            const containerRect = document.getElementById('container').getBoundingClientRect();
+            const elemRect = currentElement.getBoundingClientRect();
+
+            const newX = Math.max(containerRect.left, Math.min(x, containerRect.right - elemRect.width));
+            const newY = Math.max(containerRect.top, Math.min(y, containerRect.bottom - elemRect.height));
+
+            currentElement.style.left = `${newX}px`;
+            currentElement.style.top = `${newY}px`;          
+        }
+
+        // Fin du drag
+        function endDrag() {
+            if (!currentElement|| !draggingEnabled) return;			
+			
+            const elemRect = currentElement.getBoundingClientRect();
+            const quadRect = quadrillage.getBoundingClientRect();
+			
+			
+			// Trouver la case correspondante
+                const col = Math.floor((elemRect.left - quadRect.left) / 120);
+                const row = Math.floor((elemRect.top - quadRect.top) / 120);			
+						
+            // Vérifier si on relâche dans le quadrillage et si la case est vide
+            if (col<3 && col>=0 && row>=0 && row<3 &&	Rcase[row][col]==0)				
+				{anide=currentElement.id;
+				Nani=anide[1];				
+				Rcase[row][col]=Nani;		 
+				
+				// Recentrer dans la case
+                const centerX = quadRect.left + col * 120 + 60 - elemRect.width / 2;
+                const centerY = quadRect.top + row * 120 + 60 - elemRect.height / 2;
+
+                currentElement.style.left = `${centerX}px`;
+                currentElement.style.top = `${centerY}px`;} 
+				
+			else {
+                // Replacer à la position initiale				
+                const initial = initialPositions[currentElement.id];
+                currentElement.style.left = `${initial.left}px`;
+                currentElement.style.top = `${initial.top}px`;
+				}
+
+            currentElement = null;
+            document.removeEventListener('mousemove', drag);
+            document.removeEventListener('touchmove', drag);
+            document.removeEventListener('mouseup', endDrag);
+            document.removeEventListener('touchend', endDrag);		
+			
+			var dr=0;
+			for (a=0 ; a<3 ; a++)
+				   for (b=0 ; b<3 ; b++)
+				    if (Rcase[a][b]!=0){dr=dr+1};				   
+			 	if (dr==9)
+					{positionconsiresu.style.display="none";
+					positioncorri.style.display="none";
+					positionfin.style.display="block";
+					chrono1=setInterval("clignote1()",1000);
+					}					
+				else 
+				   {positionfin.style.display="none"};
+		}
+		 
+		function verif()				
+				{
+				positionfin.style.display="none";
+				positioncorri.style.display="block";
+				taberr=[0,0,0,0,0,0,0,0,0];
+				var compt=0;
+				var erreur=0;
+				for (a=0 ; a<3 ; a++)
+				   for (b=0 ; b<3 ; b++) 
+					{
+					if (Rcase[a][b]!=repdat[indexFiche][compt])//repdat[] = réponses correctes
+					{taberr[compt]=Rcase[a][b];					
+					Rcase[a][b]=0;
+					erreur=erreur+1};
+					compt++;}
+				
+				if (enregEnabled==true){
+				const date = getCurrentDate(); // Date actuelle
+				const score = erreur;				
+				envoyerDonnees(nom,indexFiche,score,date);
+				enregEnabled=false;
+				}
+				
+				if (erreur==0){
+				positionconsiresu.textContent="******* BRAVO! ******* Tu as fait 0 faute.";}								
+				else {positionconsiresu.textContent=`Tu as fait ${erreur} fautes`;}
+				positionconsiresu.style.fontSize="xx-large";
+				positionconsiresu.style.display="block";
+			 	chrono2=setInterval("clignote2()",1000);					
+				draggingEnabled = false;
+												
+				if (erreur==0)
+				{positioncorri.style.display="none";
+				positionfin.style.display="none";
+				clearInterval(chrono1);
+				clearInterval(chrono2);
+				}				
+				}
+				
+		function corrig()				
+				{positionconsiresu.style.display="none";
+				clearInterval(chrono2);
+				positionconsiresu.style.display="none";
+				 clearInterval(chrono1);				
+				 draggingEnabled = true;
+				 for (a=0 ; a<9 ; a++)
+				  {fig=taberr[a];
+				   if (fig!=0)
+					{const initial = initialPositions['R'+fig];
+					const animal = document.getElementById('R'+fig);
+						 animal.style.display='block';
+						 animal.style.left = `${initial.left}px`;						 
+						 animal.style.top = `${initial.top}px`;}
+						 }
+				positioncorri.style.display="none";				
+				}		
+		
+		function clignote1(){
+			positionfin.style.backgroundColor=(positionfin.style.backgroundColor=='red')?'yellow':'red';
+			positioncorri.style.backgroundColor=(positionfin.style.backgroundColor=='red')?'yellow':'red';
+			positionconsiresu.style.backgroundColor=(positionconsiresu.style.backgroundColor=='red')?'yellow':'red';
+		}
+		
+		 function clignote2(){
+		         draggingEnabled = false;
+		         for (a=0 ; a<9 ; a++)
+				  {fig=taberr[a];
+				   if (fig!=0)			
+					{Obj[fig]=document.getElementById('R'+fig)			
+					Obj[fig].style.display=(Obj[fig].style.display=='none')?'block':'none';}}
+		} 
+		
+		
+		
+		// Fonction pour quitter le jeu
+        function changJoueur() {			
+			window.location.href = "ChoixNom.html"
+        }
+		
+		 // Fonction pour choisir la fiche
+        function choixFiche() {			
+			window.location.href = "ChoixFiche.html";
+			}
+		
+		 // Fonction pour envoyer les données au fichier PHP
+        function envoyerDonnees(nom, indexFiche, score, date) {         
+			fetch('resultats.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    nom: nom,
+                    indexFiche: indexFiche,
+                    score: score,
+                    date: date
+                })
+            })
+            .then(response => response.json())
+		}
+		
+		// changer de fiche
+		function nouFiche(){
+		document.getElementById("fiche").src ="Fiches/ficheA"+indexFiche+".jpg";}
+		
+		// Afficher l'aide
+		function affAide(){
+		Obj=document.getElementById('aide')			
+		Obj.style.display=(Obj.style.display=='block')?'none':'block';}
+		
+		  // Fonction pour obtenir la date actuelle au format DD/MM/YYYY
+        function getCurrentDate() {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+			return `${day}/${month}/${year}`;
+        }
+		
+    </script>
+</body>
+</html>

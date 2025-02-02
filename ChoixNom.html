@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des joueurs</title>
+    <style>
+        body {
+            display: flex;
+            margin: 0;
+            font-family: Arial, sans-serif;
+			background-color:pink;
+        }	
+        #main {
+            width: 35%;
+            padding:50px 20px 20px 300px;
+			text-align:center;			
+        }
+        #sidebar {
+            width: 15%;			
+            border-left: 2px solid #ccc;
+            padding: 20px;
+            background-color: #ffffcc;
+            overflow-y: auto;
+            height: 100vh;
+			align:left;			
+        }
+        .player {
+            cursor: pointer;
+            padding: 2px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+			font-size:14px;
+			font-weight:bold;
+        }
+        .player:hover {
+            background-color: #f0f0f0;
+        }
+        .player.selected {
+            background-color: #d0eaff;
+            border-color: #007bff;
+        }
+        #validate-btn {
+           	margin: 10px 5px 50px 5px;		
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: 2px solid black;
+            border-radius: 5px;
+            cursor: pointer;
+			font-size:20px;
+			font-weight:bold;
+						
+        }
+        #validate-btn:hover {
+            background-color: #0056b3;}
+			
+		#bouton {
+			margin-top:150px;
+			font-size:30px;
+			background-color:yellow;
+			}
+        
+    </style>
+    <script>
+	     var liste= ""
+        // Charger les noms depuis resultats.txt via PHP
+        function chargerNoms() {
+            fetch('listescores.php?action=get_names')
+                .then(response => response.json())					
+                .then(data => {					
+					liste=data;
+					const sidebar = document.getElementById('sidebar');
+                    sidebar.innerHTML = ''; // Réinitialiser la liste					
+                    data.forEach(nom => {
+                        const playerDiv = document.createElement('div');
+                        playerDiv.className = 'player';
+                        playerDiv.textContent = nom;						
+                        playerDiv.onclick = () => selectionnerNom(playerDiv);
+                        sidebar.appendChild(playerDiv);
+                    });
+                })
+                .catch(error => console.error('Erreur lors du chargement des noms :', error));
+        }
+
+        let nomSelectionne = null;
+
+        // Sélectionner un joueur
+        function selectionnerNom(playerDiv) {
+            document.querySelectorAll('.player').forEach(div => div.classList.remove('selected'));
+            playerDiv.classList.add('selected');
+            nomSelectionne = playerDiv.textContent;
+        }
+
+        // Valider la sélection et ouvrir la nouvelle fenêtre
+        function validerSelection() {
+            if (!nomSelectionne) {
+                alert('Veuillez sélectionner un joueur dans la liste.');
+                return;
+            }
+            // Ouvrir une nouvelle fenêtre avec le fichier choix_fiche.html
+             localStorage.setItem("nomJoueur", nomSelectionne);             
+             window.location.href = "ChoixFiche.html";				
+        }
+
+        window.onload = () => {
+            chargerNoms();
+			
+        };
+		
+		// Fonction pour gérer la saisie et l'enregistrement
+        function saisirResultats() {
+            const prenom = prompt("Entrez d'abord le prénom du joueur :");
+					if (!prenom){exit};
+			const nomf = prompt("Entrez le nom de famille du joueur :"); 
+					if (!nomf){exit};
+			const noms= nomf+" "+prenom;
+			const nom = noms.toUpperCase();
+            if (nom === null || nom.trim() === "") return; // Annulation ou saisie vide
+
+            if (nom.length > 30) {
+                alert("Le nom ne doit pas dépasser 30 caractères.");
+                return saisirResultats(); // Recommencer
+            }
+			
+			if (liste.includes(nom)){
+				alert("le nom "+nom+" est déjà dans la liste.");
+				return saisirResultats();
+				}
+				
+			var dialog = confirm("Le nom "+nom+" va être ajouté à la liste");
+				if (!dialog) {
+				exit;}
+				
+			// Valeurs fantômes (qui ne seront pas enregistrées) pour permettre l'exécution de la fonction
+			const indexFiche="65";			
+			const score="5";
+			const date="18/12/2024";
+			envoyerDonnees(nom,indexFiche, score, date);
+			chargerNoms();		
+		}
+		  
+		 // Fonction pour envoyer les données au fichier PHP
+        function envoyerDonnees(nom, indexFiche, score, date) {         
+			fetch('resultats.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    nom: nom,
+                    indexFiche: indexFiche,
+                    score: score,
+                    date: date
+                })
+            })
+            .then(response => response.json())        
+          
+        chargerNoms();
+		}
+    </script>
+</head>
+<body>
+	
+   <div id="main">
+		<H1 style="background-color:#ff66ff;"> Choix du joueur </H1><br><br><br>
+        <h2>Sélectionnez un joueur dans la liste<br>Puis validez</h2><br><br><br>
+        <p><b>Si le nom n'est pas dans la liste, cliquez sur le bouton "Entrer un nouveau nom."</b></p>
+		 <button id="bouton" onclick="saisirResultats()">Entrer un nouveau nom</button>
+    </div>
+    <div id="sidebar">
+        <h2>Liste des joueurs</h2>
+    </div>
+    <button id="validate-btn" onclick="validerSelection()">Valider</button>
+	
+	
+</body>
+</html>

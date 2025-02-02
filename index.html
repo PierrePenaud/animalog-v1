@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des joueurs</title>
+    <style>
+        body {           
+			background-color:pink;
+			
+        }
+		/* Styles pour l'image de présentation */
+            #presentation {
+			display:block;
+			width:auto;
+			margin:auto;			
+			border:3px solid black;
+			border-radius:20px;
+             }      
+		
+		
+      
+        
+    </style>
+    <script>
+	     
+		 function affChNom() {
+            window.location.href = "ChoixNom.html";
+        }
+
+        window.onload = function() {			
+            //Cacher l'image après 10 secondes si l'utilisateur ne clique pas				
+            setTimeout(affChNom, 10000);		
+             //Permettre de cacher l'image immédiatement en cliquant dessus
+            document.getElementById("presentation").addEventListener("click",affChNom);
+        };
+		 
+       
+    </script>
+</head>
+<body>
+<!-- Écran de présentation-->
+	<img id="presentation" src="Fiches/couvanimalog.jpg"/>
+ 		
+</body>
+</html>
+
+
