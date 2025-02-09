@@ -23,7 +23,7 @@
             background-color: #ffffcc;
             overflow-y: auto;
             height: 100vh;
-			align:left;			
+			align-items:left;			
         }
         .player {
             cursor: pointer;
@@ -58,15 +58,25 @@
             background-color: #0056b3;}
 			
 		#bouton {
-			margin-top:150px;
+			margin-top:80px;
 			font-size:30px;
 			background-color:yellow;
+			border-radius:20px;
 			}
+		#boutonsup {
+			display:none;
+			margin-top:60px;
+			font-size:30px;
+			background-color:DeepSkyBlue;
+			border-radius:20px;
+			}
+		h2 {font-size:20px}
+
         
     </style>
     <script>
 	     var liste= ""
-        // Charger les noms depuis resultats.txt via PHP
+ // Fonction pour charger les noms depuis resultats.txt via PHP
         function chargerNoms() {
             fetch('listescores.php?action=get_names')
                 .then(response => response.json())					
@@ -87,20 +97,20 @@
 
         let nomSelectionne = null;
 
-        // Sélectionner un joueur
+// fonction pour sélectionner un joueur
         function selectionnerNom(playerDiv) {
             document.querySelectorAll('.player').forEach(div => div.classList.remove('selected'));
             playerDiv.classList.add('selected');
             nomSelectionne = playerDiv.textContent;
         }
 
-        // Valider la sélection et ouvrir la nouvelle fenêtre
+// Fonction pour valider la sélection et ouvrir la nouvelle fenêtre
         function validerSelection() {
             if (!nomSelectionne) {
                 alert('Veuillez sélectionner un joueur dans la liste.');
                 return;
             }
-            // Ouvrir une nouvelle fenêtre avec le fichier choix_fiche.html
+            // Ouvrir une nouvelle fenêtre avec le fichier ChoixFiche.html		
              localStorage.setItem("nomJoueur", nomSelectionne);             
              window.location.href = "ChoixFiche.html";				
         }
@@ -110,14 +120,14 @@
 			
         };
 		
-		// Fonction pour gérer la saisie et l'enregistrement
+// Fonction pour gérer la saisie et l'enregistrement
         function saisirResultats() {
             const prenom = prompt("Entrez d'abord le prénom du joueur :");
 					if (!prenom){exit};
 			const nomf = prompt("Entrez le nom de famille du joueur :"); 
 					if (!nomf){exit};
-			const noms= nomf+" "+prenom;
-			const nom = noms.toUpperCase();
+			const noms= nomf.trim()+" "+prenom.trim();
+			const nom = noms.toUpperCase();			
             if (nom === null || nom.trim() === "") return; // Annulation ou saisie vide
 
             if (nom.length > 30) {
@@ -129,6 +139,10 @@
 				alert("le nom "+nom+" est déjà dans la liste.");
 				return saisirResultats();
 				}
+				
+			if (nom=="LE NOM SUPPRIMER"){				
+			boutonsup.style.display="inline";
+			exit;}
 				
 			var dialog = confirm("Le nom "+nom+" va être ajouté à la liste");
 				if (!dialog) {
@@ -142,7 +156,7 @@
 			chargerNoms();		
 		}
 		  
-		 // Fonction pour envoyer les données au fichier PHP
+// Fonction pour envoyer les données au fichier PHP
         function envoyerDonnees(nom, indexFiche, score, date) {         
 			fetch('resultats.php', {
                 method: 'POST',
@@ -160,15 +174,45 @@
           
         chargerNoms();
 		}
+		
+// Fonction pour supprimer un nom et ses données
+		function supprimerNom() {
+    if (!nomSelectionne) {
+        alert("Veuillez sélectionner un joueur à supprimer.");
+        return;
+    }
+    if (!confirm("ATTENTION ! \n Vous allez supprimer le nom et tous ses résultats. \n\n Êtes-vous sûr de vouloir supprimer " + nomSelectionne + " ?")) {
+        return;
+    }
+    fetch('listescores.php?action=delete_name', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({ nom: nomSelectionne })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Le joueur " + nomSelectionne + " a été supprimé.");
+            chargerNoms();
+        } else {
+            alert("Erreur lors de la suppression : " + data.error);
+        }
+    })
+    .catch(error => console.error("Erreur lors de la suppression :", error));
+}
+
     </script>
 </head>
 <body>
 	
    <div id="main">
 		<H1 style="background-color:#ff66ff;"> Choix du joueur </H1><br><br><br>
-        <h2>Sélectionnez un joueur dans la liste<br>Puis validez</h2><br><br><br>
-        <p><b>Si le nom n'est pas dans la liste, cliquez sur le bouton "Entrer un nouveau nom."</b></p>
-		 <button id="bouton" onclick="saisirResultats()">Entrer un nouveau nom</button>
+        <h2>Sélectionnez un joueur dans la liste<br>Puis cliquez sur le bouton bleu pour valider.</h2><br><br>
+        <p><b>Si le nom n'est pas dans la liste,<br> cliquez sur le bouton "Entrer un nouveau nom."</b></p>
+		 <button id="bouton" onclick="saisirResultats()">&nbsp;&nbsp;Entrer un nouveau nom&nbsp;&nbsp;</button>
+		 <button id="boutonsup" onclick="supprimerNom()">&nbsp;&nbsp;Supprimer le nom sélectionné&nbsp;&nbsp;</button>
     </div>
     <div id="sidebar">
         <h2>Liste des joueurs</h2>

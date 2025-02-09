@@ -34,7 +34,7 @@
             padding: 5px;
             box-sizing: border-box;
         }
-        .column h3 {
+		.column h3 {
             text-align: center;
             background-color: #00AEEF;
             color: white;
@@ -61,7 +61,7 @@
     <div>
         <button onclick="validerFiche()" style="background-color: yellow;font-size:20px;border-radius:10px;">Pointe la fiche choisie puis clique sur le jaune</button>
         <button style="font-size:20px;border-radius:10px;" onclick="changerJoueur()">Changer de joueur</button>
-        <button style="font-size:20px;border-radius:10px;" onclick="quitterJeu()">Quitter le jeu</button>		
+        		
     </div>
 </div>
     <script>
@@ -72,11 +72,9 @@
 		var messacoul=new Array();
 		const numerofiche=0;		
 		
-		//récupère les scores et dates
-		chargerScoresEtCreerFiches(nom);
-		//rechercherScoresEtDates(nom);		 
-		 //document.getElementById("nomJoueur").innerText = "Joueur : "+nom+" ";            
-         //var attente=setTimeout(creerFiches,400) ;//attente pour que le PHP ait le temps	
+		//récupère les scores et dates avec attente PHP et crée les fiches
+		chargerScoresEtCreerFiches(nom);		          
+         //var attente=setTimeout(creerFiches,400) ;//attente pour que le PHP ait le temps : ligne supprimée remplacée par "await fonction"	
 
 		
       
@@ -115,35 +113,58 @@
 
         // Fonction pour valider la fiche choisie
         function validerFiche() {
-            const ficheChoisie = document.querySelector('input[name="fiche"]:checked');
-            if (ficheChoisie) {
-                const indexFiche = ficheChoisie.value;               
-				var dialog=confirm(" Le joueur est "+nom+"\n Il a choisi la fiche N° "+indexFiche);
-					if (!dialog){exit};
+			const date = getCurrentDate(); // Date actuelle	
+            const ficheChoisie = document.querySelector('input[name="fiche"]:checked');	
+			
+			
+			if (!ficheChoisie) {
+			alert("Veuillez choisir une fiche avant de valider !");
+			exit;}
+			
+			const indexFiche = ficheChoisie.value;			
+			
+			if (dates[indexFiche-1]==date){
+			alert("Tu as déjà fait cette fiche aujourd'hui.\n Tu ne peux pas la refaire le même jour.\n Tu pourras la refaire à partir de demain.");
+			creerFiches();
+			exit;}
+					
+			if (scores[indexFiche-1]==0){			
+			var dialog=confirm(" Tu as déjà réussi la fiche N° " +indexFiche+" le "+dates[indexFiche-1]+"\n Veux-tu la refaire aujourd'hui ?");			
+					if (!dialog){
+					creerFiches();
+					exit};}
+			
+                       
+				var dialog=confirm(" C'est "+nom+" qui va jouer \n avec la fiche N° "+indexFiche);
+					if (!dialog){
+					creerFiches();
+					exit};
 					
                 // Stocker les données pour la prochaine page				
                 localStorage.setItem("nomJoueur", nom);
                 localStorage.setItem("numeroFiche", indexFiche);
 
                 // Redirection vers la page de jeu
-                window.location.href = "AnimalogV9.html";
-            } else {
-                alert("Veuillez choisir une fiche avant de valider !");
-            }
+                window.location.href = "Animalog.html";
+           // } 
         }
 
         // Fonction pour changer de joueur
         function changerJoueur() {            
 			window.location.href = "ChoixNom.html"
         }
-
-        // Fonction pour quitter le jeu
-        function quitterJeu() {	
-		window.location.href = "https://www.google.fr/";
-        }
 		
-		//Fonction pour récupèrer les scores et dates
-		//première partie
+// Fonction pour obtenir la date actuelle au format DD/MM/YYYY
+        function getCurrentDate() {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+			return `${day}/${month}/${year}`;
+        }
+      
+//Fonction pour récupèrer les scores et dates avec attente réponse PHP
+	//première partie
 		async function chargerScoresEtCreerFiches(nom) {
 		// Affiche le nom du joueur immédiatement
 		document.getElementById("nomJoueur").innerText = "Joueur : " + nom + " ";
@@ -155,7 +176,7 @@
 		creerFiches();
 }
 
-		//deuxième partie fonction elle-même
+	//deuxième partie fonction elle-même
 		// Fonction pour récupérer les scores et dates
 		async function rechercherScoresEtDates(nom) {
 		try {
