@@ -40,17 +40,21 @@
             border: 3px solid black;
             box-sizing: border-box;
         }
-        .case {
-            border: 1px solid black;
+        .case {            
             width: 120px;
             height: 120px;
-			background-color: white;		
+			background-color: white;
+            border-radius: 5px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);		
         }
         .draggable {
             position: absolute;
             width: 70px;
             height: 70px;
             cursor: grab;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         #R1 {right: calc(48%);
             top: 15%;z-index:5}       
@@ -249,15 +253,15 @@
             <div class="case"></div>
             <div class="case"></div>
         </div>
-        <img id="R1" class="draggable" src="Fiches/chienvert.ICO" alt="Chien">
-        <img id="R2" class="draggable" src="Fiches/oiseauver.ICO" alt="Oiseau">
-		<img id="R3" class="draggable" src="Fiches/chatvert.ICO" alt="Chien">
-        <img id="R4" class="draggable" src="Fiches/chienrou.ICO" alt="Oiseau">
-		<img id="R5" class="draggable" src="Fiches/oiseaurou.ICO" alt="Chien">
-        <img id="R6" class="draggable" src="Fiches/chatrou.ICO" alt="Oiseau">
-		<img id="R7" class="draggable" src="Fiches/chienjau.ICO" alt="Chien">
-        <img id="R8" class="draggable" src="Fiches/oiseaujau.ICO" alt="Oiseau">
-		<img id="R9" class="draggable" src="Fiches/chatjau.ICO" alt="Chien">        
+        <img id="R1" class="draggable" src="assets/icons/chien-vert.png" alt="Chien">
+        <img id="R2" class="draggable" src="assets/icons/oiseau-vert.png" alt="Oiseau">
+		<img id="R3" class="draggable" src="assets/icons/chat-vert.png" alt="Chat">
+        <img id="R4" class="draggable" src="assets/icons/chien-rouge.png" alt="Chien">
+		<img id="R5" class="draggable" src="assets/icons/oiseau-rouge.png" alt="Oiseau">
+        <img id="R6" class="draggable" src="assets/icons/chat-rouge.png" alt="Chat">
+		<img id="R7" class="draggable" src="assets/icons/chien-jaune.png" alt="Chien">
+        <img id="R8" class="draggable" src="assets/icons/oiseau-jaune.png" alt="Oiseau">
+		<img id="R9" class="draggable" src="assets/icons/chat-jaune.png" alt="Chat">        
 		<div id="positionconsiresu">Pour jouer, fais glisser les animaux<br>dans les cases ci-dessous </div>
 		<button id="positionchoix" onclick="choixFiche()">&nbsp;Choisir une&nbsp;<br>&nbsp;autre fiche</button>
 		<button id="positionquit" onclick="changJoueur()">&nbsp;Changer&nbsp;<br>&nbsp;&nbsp;de joueur. </button> 
