@@ -4,76 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des joueurs</title>
-    <style>
-        body {
-            display: flex;
-            margin: 0;
-            font-family: Arial, sans-serif;
-			background-color:pink;
-        }	
-        #main {
-            width: 35%;
-            padding:50px 20px 20px 300px;
-			text-align:center;			
-        }
-        #sidebar {
-            width: 15%;			
-            border-left: 2px solid #ccc;
-            padding: 20px;
-            background-color: #ffffcc;
-            overflow-y: auto;
-            height: 100vh;
-			align-items:left;			
-        }
-        .player {
-            cursor: pointer;
-            padding: 2px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #fff;
-			font-size:14px;
-			font-weight:bold;
-        }
-        .player:hover {
-            background-color: #f0f0f0;
-        }
-        .player.selected {
-            background-color: #d0eaff;
-            border-color: #007bff;
-        }
-        #validate-btn {
-           	margin: 10px 5px 50px 5px;		
-            padding: 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: 2px solid black;
-            border-radius: 5px;
-            cursor: pointer;
-			font-size:20px;
-			font-weight:bold;
-						
-        }
-        #validate-btn:hover {
-            background-color: #0056b3;}
-			
-		#bouton {
-			margin-top:80px;
-			font-size:30px;
-			background-color:yellow;
-			border-radius:20px;
-			}
-		#boutonsup {
-			display:none;
-			margin-top:60px;
-			font-size:30px;
-			background-color:DeepSkyBlue;
-			border-radius:20px;
-			}
-		h2 {font-size:20px}
-
-        
-    </style>
+    <link rel="stylesheet" href="style.css">
     <script>
 	     var liste= ""
  // Fonction pour charger les noms depuis resultats.txt via PHP
@@ -208,7 +139,7 @@
 <body>
 	
    <div id="main">
-		<H1 style="background-color:#ff66ff;"> Choix du joueur </H1><br><br><br>
+		<H1> Choix du joueur </H1><br><br><br>
         <h2>Sélectionnez un joueur dans la liste<br>Puis cliquez sur le bouton bleu pour valider.</h2><br><br>
         <p><b>Si le nom n'est pas dans la liste,<br> cliquez sur le bouton "Entrer un nouveau nom."</b></p>
 		 <button id="bouton" onclick="saisirResultats()">&nbsp;&nbsp;Entrer un nouveau nom&nbsp;&nbsp;</button>

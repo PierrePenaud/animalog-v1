@@ -1,0 +1,100 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+html {
+    color: #242424;
+    text-align: left;
+}
+body {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    justify-items: center;
+    font-family: 'Roboto', sans-serif;
+    padding: 10px 10%;
+    height: 100vh;
+    background-color: #FBF5F2;
+    font-size: large
+}	
+#main {
+    flex: auto;
+    border: 2px solid #C4C4C4;
+    border-radius: 10px;
+    padding: 10px;
+    text-align:center;			
+}
+#sidebar {			
+    border: 2px solid #C4C4C4;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+    overflow-y: auto;
+    align-items:left;			
+}
+.player {
+    cursor: pointer;
+    padding: 2px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size:14px;
+    font-weight:bold;
+}
+.player:hover {
+    background-color: #f0f0f0;
+}
+.player.selected {
+    background-color: #d0eaff;
+    border-color: #007bff;
+}
+#validate-btn {		
+    padding: 10px;
+    background-color: #EB9F4A;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-size: large
+                
+}
+#validate-btn:hover {
+    background-color: #d89343;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+    
+#bouton {
+    padding: 10px;
+    margin-top:80px;
+    background-color:#EB9F4A;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius:5px;
+    border: none;
+    cursor: pointer;
+    font-size: large
+    }
+#bouton:hover {
+    background-color: #d89343;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+#boutonsup {
+    display:none;
+    margin-top:60px;
+    font-size:30px;
+    background-color:DeepSkyBlue;
+    border-radius:20px;
+    }
+h1 {
+    background-color: #E5E5E5;
+}
+h2 {
+    font-size:20px
+}
