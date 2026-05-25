@@ -1,13 +1,14 @@
-import { div } from "framer-motion/client"
-import TileAnimal from "./components/TileAnimal"
-import ANIMAUX from "./data/animaux"
+import GridCell from "./components/GridCell"
+import ANIMAUX from './data/animaux'
 
 function App() {
   return (
-    <div className="p-8 flex gap-4 flex-wrap">
-      {ANIMAUX.map(animal => (
-        <TileAnimal key={animal.id} animal={animal} />
-      ))}
+    <div className="p-8 flex flex-col gap-8">
+
+      <GridCell animal={null}/>
+      
+      <GridCell animal={ANIMAUX[0]}/>
+
     </div>
   )
 }
