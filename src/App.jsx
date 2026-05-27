@@ -1,13 +1,10 @@
-import GridCell from "./components/GridCell"
-import ANIMAUX from './data/animaux'
+import Grid from "./components/Grid"
 
 function App() {
   return (
-    <div className="p-8 grid grid-cols-3 gap-8">
+    <div className="p-8">
 
-      {Array(9).fill(null).map((_, index) => (
-        <GridCell key={index} animal={null} />
-      ))}
+      <Grid/>
       
 
     </div>
