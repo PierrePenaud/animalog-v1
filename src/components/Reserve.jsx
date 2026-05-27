@@ -1,3 +1,4 @@
+import ANIMAUX from "../data/animaux";
 import TileAnimal from "./TileAnimal";
 
 function Reserve ({ animaux }) {
