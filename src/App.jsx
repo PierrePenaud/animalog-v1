@@ -1,16 +1,23 @@
 import Grid from "./components/Grid";
 import ANIMAUX from "./data/animaux";
 import Reserve from "./components/Reserve";
-import { act, useState } from "react";
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import TileAnimal from "./components/TileAnimal";
+import LoginScreen from "./screens/LoginScreen";
+import { useState } from "react";
 
 function App() {
+  const [joueur, setJoueur] = useState(null)
   const [grille, setGrille] = useState(Array(9).fill(null));
   const [animalActif, setAnimalActif] = useState(null);
   const animauxDisponibles = ANIMAUX.filter(
     (animal) => !grille.includes(animal.id) && animal.id !== animalActif?.id,
   );
+  
+  
+  if (joueur === null) {
+    return <LoginScreen onLogin={setJoueur}  />
+  } 
 
   function handleDragStart(event) {
     console.log("drag start", event);

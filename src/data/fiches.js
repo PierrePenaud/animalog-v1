@@ -18,6 +18,18 @@ const SOLUTIONS = {
   65: "174963285"
 }
 
+export const SOLUTION_MAP = {
+  "1": "chien-vert",
+  "2": "oiseau-vert",
+  "3": "chat-vert",
+  "4": "chien-rouge",
+  "5": "oiseau-rouge",
+  "6": "chat-rouge",
+  "7": "chien-jaune",
+  "8": "oiseau-jaune",
+  "9": "chat-jaune",
+}
+
 const FICHES = Array.from({ length: 65 }, (_, i) => ({
   id: i + 1,
   image: `/fiches/ficheA${i + 1}.svg`,
