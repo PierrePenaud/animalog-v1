@@ -30,10 +30,21 @@ export const SOLUTION_MAP = {
   "9": "chat-jaune",
 }
 
+export const NIVEAUX = {
+  1: { label: "Très facile", couleur: "green",  fiches: [1, 13]  },
+  2: { label: "Facile",      couleur: "blue",   fiches: [14, 26] },
+  3: { label: "Moyen",       couleur: "yellow", fiches: [27, 39] },
+  4: { label: "Difficile",   couleur: "orange", fiches: [40, 52] },
+  5: { label: "Expert",      couleur: "red",    fiches: [53, 65] },
+}
+
+const niveauObject = Object.values(NIVEAUX)
+
 const FICHES = Array.from({ length: 65 }, (_, i) => ({
   id: i + 1,
   image: `/fiches/ficheA${i + 1}.svg`,
-  solution: SOLUTIONS[i + 1]
+  solution: SOLUTIONS[i + 1],
+  niveau: niveauObject.find(n => i + 1 >= n.fiches[0] && i + 1 <= n.fiches[1])
 }))
 
 export default FICHES
