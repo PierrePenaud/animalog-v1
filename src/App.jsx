@@ -6,8 +6,11 @@ import TileAnimal from "./components/TileAnimal";
 import LoginScreen from "./screens/LoginScreen";
 import { useState } from "react";
 import FicheScreen from "./screens/FicheScreen";
+import { SOLUTION_MAP } from "./data/fiches";
+import Validation from "./components/Validation";
 
 function App() {
+  const [resultat, setResultat] = useState(null)
   const [ficheChoisie, setFicheChoisie] = useState(null)
   const [joueur, setJoueur] = useState(null)
   const [grille, setGrille] = useState(Array(9).fill(null));
@@ -49,6 +52,14 @@ function App() {
     setAnimalActif(null);
   }
 
+  function onValider() {
+    const solutionTableau = ficheChoisie.solution.split("")
+    const solutionIds = solutionTableau.map (chiffre => SOLUTION_MAP[chiffre])
+    const estCorrect = solutionIds.join("") === grille.join("")
+    setResultat(estCorrect)
+  }
+
+
   return (
     <div className="p-8 flex flex-col gap-8">
       <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
@@ -57,6 +68,9 @@ function App() {
         </DragOverlay>
         <Grid grille={grille} />
         <Reserve animaux={animauxDisponibles} />
+        <Validation grille={grille} solution={ficheChoisie.solution} onValider={onValider} />
+        {resultat === true && <div>Bravo !</div> }
+        {resultat === false && <div>Essaie encore !</div> }
       </DndContext>
     </div>
   );
