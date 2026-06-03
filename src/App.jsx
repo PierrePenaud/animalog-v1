@@ -16,7 +16,7 @@ function App() {
     (animal) => !grille.includes(animal.id) && animal.id !== animalActif?.id,
   );
   
-  
+
   if (joueur === null) {
     return <LoginScreen onLogin={setJoueur}  />
   }
@@ -24,6 +24,7 @@ function App() {
   if (ficheChoisie === null) {
     return <FicheScreen onFicheChoisie={setFicheChoisie} />
   }
+
 
   function handleDragStart(event) {
     console.log("drag start", event);
