@@ -52,6 +52,7 @@ function GameScreen({ fiche }) {
         <DragOverlay>
           {animalActif ? <TileAnimal animal={animalActif} /> : null}
         </DragOverlay>
+        <img src={fiche.image} alt="" />
         <Grid grille={grille} />
         <Reserve animaux={animauxDisponibles} />
         <Validation
