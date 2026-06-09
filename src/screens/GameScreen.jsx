@@ -7,7 +7,6 @@ import { SOLUTION_MAP } from "../data/fiches";
 import Validation from "../components/Validation";
 import { useState } from "react";
 
-
 function GameScreen({ fiche }) {
   const [resultat, setResultat] = useState(null);
   const [grille, setGrille] = useState(Array(9).fill(null));
@@ -47,22 +46,27 @@ function GameScreen({ fiche }) {
   }
 
   return (
-    <div className="p-8 flex flex-col gap-8">
-      <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-        <DragOverlay>
-          {animalActif ? <TileAnimal animal={animalActif} /> : null}
-        </DragOverlay>
-        <img src={fiche.image} alt="" />
-        <Grid grille={grille} />
-        <Reserve animaux={animauxDisponibles} />
-        <Validation
-          grille={grille}
-          solution={fiche.solution}
-          onValider={onValider}
-        />
-        {resultat === true && <div>Bravo !</div>}
-        {resultat === false && <div>Essaie encore !</div>}
-      </DndContext>
+    <div className="container mx-auto bg-amber-100">
+      <div className="p-8 flex flex-col gap-8">
+        <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+          <DragOverlay>
+            {animalActif ? <TileAnimal animal={animalActif} /> : null}
+          </DragOverlay>
+          <h1>Fiche n°{fiche.id}</h1>
+          <img className="rounded-lg" src={fiche.image} alt="" />
+          <div className="flex flex-col md:flex-row gap-4 items-center">
+            <Grid grille={grille} />
+            <Reserve animaux={animauxDisponibles} />
+          </div>
+          <Validation
+            grille={grille}
+            solution={fiche.solution}
+            onValider={onValider}
+          />
+          {resultat === true && <div>Bravo !</div>}
+          {resultat === false && <div>Essaie encore !</div>}
+        </DndContext>
+      </div>
     </div>
   );
 }
